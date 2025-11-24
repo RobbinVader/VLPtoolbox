@@ -1,13 +1,15 @@
 % RSS改正方法，基于状态量对FFT结果进行改正，不能加汉宁窗
 % NED系下改正
-% 2025.11.22
+% 2025.11.24
 
 function dRSSs = RSS_corr(t,fft_result,common_t,p,LED,A,M)
-T=1;hz=200;%目前仅允许RSS和状态的采样率分别为1hz和200hz，后续改成任意hz
+T=1;hz=200;%目前仅允许FFT窗口1s、状态的采样率200hz，后续改成任意hz
+dt=t(2)-t(1); % RSS采样间隔
 [nled,~]=size(LED);
 [tlength,~]=size(fft_result);
 dRSSs=zeros(floor(tlength),nled);
-start_ind=round(common_t(1));
+start_ind= find(t > common_t(1), 1, 'first');
+figure;
 for i=1:nled
     for j=1:tlength
         % 高速载体改正
@@ -17,14 +19,19 @@ for i=1:nled
         end
         % 积分
         for k=1:hz
-            ind=(j-start_ind)*hz+k-hz/2;
+            ind=(j-start_ind)*hz*dt+k-hz/2;
             r=p(ind,1:3);
             cnb=Euler2Dcm(p(ind,4),p(ind,5),p(ind,6));
             n_pd=cnb*[0;0;-1];
             n_led=[0;0;-1];
-            vel=(p(ind,1:3)-p(ind-1,1:3))*hz;
             D=LED(i,:)-r;
-            w=(p(ind,4:6)-p(ind-1,4:6))*hz;
+            if(ind==1)
+                vel=[0,0,0];
+                w=[0,0,0];
+            else
+                vel=(p(ind,1:3)-p(ind-1,1:3))*hz;
+                w=(p(ind,4:6)-p(ind-1,4:6))*hz;
+            end
             coef1=-cross(D,n_pd)/dot(D,n_pd);
             coef2=-n_pd/dot(n_pd,D)-M(i)*n_led/dot(n_led,D)+(3+M(i))*D'/norm(D)^2;
             coef3=-A(i)*cross(D,n_pd)*dot(n_led,D)^M(i)/norm(D)^(3+M(i));
@@ -50,5 +57,8 @@ for i=1:nled
         end
         dRSSs(j,i)=dP1+dP2+dP3+dP4;
     end
-
+    subplot(nled,1,i);
+    plot(t,dRSSs(:,i));
+    ylabel(['LED',num2str(i)]);
 end
+xlabel('Time (s)');
