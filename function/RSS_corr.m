@@ -2,14 +2,16 @@
 % NED系下改正
 % 2025.11.24
 
-function dRSSs = RSS_corr(t,fft_result,common_t,p,LED,A,M)
+function dRSSs = RSS_corr(t,fft_result,common_t,p,LED,A,M,isplot)
 T=1;hz=200;%目前仅允许FFT窗口1s、状态的采样率200hz，后续改成任意hz
 dt=t(2)-t(1); % RSS采样间隔
 [nled,~]=size(LED);
 [tlength,~]=size(fft_result);
 dRSSs=zeros(floor(tlength),nled);
 start_ind= find(t > common_t(1), 1, 'first');
-figure;
+if(isplot)
+    figure;
+end
 for i=1:nled
     for j=1:tlength
         % 高速载体改正
@@ -57,8 +59,13 @@ for i=1:nled
         end
         dRSSs(j,i)=dP1+dP2+dP3+dP4;
     end
-    subplot(nled,1,i);
-    plot(t,dRSSs(:,i));
-    ylabel(['LED',num2str(i)]);
+    if(isplot)
+        subplot(nled,1,i);
+        plot(t,dRSSs(:,i));
+        ylabel(['LED',num2str(i)]);
+    end
 end
-xlabel('Time (s)');
+if(isplot)
+    xlabel('Time (s)');
+    linkaxes(findall(gcf,'type','axes'),'x');
+end

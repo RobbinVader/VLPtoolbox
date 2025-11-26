@@ -15,8 +15,8 @@ for k=0:(num_point-1)
     %傅里叶变换
     if(k<fre/2)
         s=vlp(1:N);
-    elseif(k>=num_point-1-fre/2)
-        s=vlp(1+(num_point-fre)*N/fre:N+(num_point-fre)*N/fre);
+    elseif(N+(k-fre/2)*N/fre>=Ntotal)
+        s=vlp(Ntotal-N+1:Ntotal);
     else
         s=vlp(1+(k-fre/2)*N/fre:N+(k-fre/2)*N/fre);
     end

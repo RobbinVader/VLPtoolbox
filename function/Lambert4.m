@@ -9,8 +9,12 @@ function f = Lambert4(X,LED,a,M,roll,pitch,dir,RSS,std)
     for iled=1:nLED
         LOS=LED(iled,:)-X;
         s=norm(LOS);
+        % 计算夹角余弦，并裁剪到 [0, 1]
         cos_alpha = npd' * LOS'/norm(LOS);
         cos_theta = nled * LOS'/norm(LOS);
+        cos_alpha = max(cos_alpha, 0);
+        cos_theta = max(cos_theta, 0);
+
         f(iled)= a(iled)*cos_theta^(M(iled))*cos_alpha/s^2-RSS(iled);
         f(iled)=f(iled)/std(iled);%weight
     end
