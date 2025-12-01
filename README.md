@@ -4,11 +4,18 @@
 
 @author: Sun, Xiao, Wu, Haoyu, Wuhan University  
 
-@测试版本：MATLAB 2024b
+@测试版本：MATLAB 2024a/2024b，Windows 11
 
 ## 功能列表
 
+### postprocess 目录
+
+MATLAB后处理程序
+
+- **sync.m**: 用于VLP、IMU、全站仪真值数据时间同步
+
 ### function 目录
+用于MATLAB数据处理的函数库
 
 - **read_newest_VLP.m**: 自动查找指定目录下修改时间最新的 VLP 数据文件，便于批量处理时快速定位最新数据
 - **VLP_t0.m**: 从标准格式的文件名（如 YYYYMMDD_HHMMSS...）中提取初始时间戳，用于多传感器时间同步
@@ -34,12 +41,13 @@
 - **config_from_yaml**: 读取数据配置文件
 
 ### realtime 目录
+python脚本，用于实时显示及处理VLP数据
 
 - **real_time_show_rss.py**: 通过串口实时读取光强传感器数据，并绘制RSS变化等图表
 
 ### 第三方库
 
-- **MartinKoch123-yaml-1.6.0.0**: 用于配置文件yaml的解析
+- **MartinKoch123-yaml-1.6.0.0**: 用于配置文件yaml的解析，无需安装，可直接调用
 
 ### config 目录
 
