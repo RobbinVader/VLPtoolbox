@@ -17,8 +17,8 @@ function coordinates = read_TS_data(filename, idx1, idx2)
     selected_indices = point_numbers >= idx1 & point_numbers <= idx2;
     selected_data = data(selected_indices, :);
         
-    % 对duration时间进行转换
-    time = seconds(selected_data.Time);
+    % 对duration时间进行转换，UTC
+    time = seconds(selected_data.Time) - 8*3600;
 
     % 储存坐标值和时间，交换X和Y
     coordinates = [time, selected_data.Y, selected_data.X, selected_data.Z];
