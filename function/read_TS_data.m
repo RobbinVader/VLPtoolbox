@@ -22,4 +22,6 @@ function coordinates = read_TS_data(filename, idx1, idx2)
 
     % 储存坐标值和时间，交换X和Y
     coordinates = [time, selected_data.Y, selected_data.X, selected_data.Z];
+
+    fprintf('成功读取 %d 行全站仪数据\n', length(time));
 end
