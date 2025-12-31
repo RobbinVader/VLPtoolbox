@@ -67,7 +67,7 @@ python脚本，用于实时显示及处理VLP数据
 
 ```bash
 pip install pyserial numpy scipy matplotlib pyyaml
-
+```
 
                🌟
               🎄🎄
