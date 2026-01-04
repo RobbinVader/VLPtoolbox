@@ -16,12 +16,12 @@ for i=1:nled
     for j=1:tlength
         % 高速载体改正
         dP1=0;dP2=0;dP3=0;dP4=0;
-        if(t(j)<=common_t(1)+0.5 || t(j)>=common_t(end)-0.5) % 状态量时间段外
+        if(t(j)<common_t(1)+0.5 || t(j)>common_t(end)-0.5) % 状态量时间段外
             continue;
         end
         % 积分
         for k=1:hz
-            ind=(j-start_ind)*hz*dt+k-hz/2;
+            ind=(j-start_ind+1)*hz*dt+k-hz/2;
             r=p(ind,1:3);
             cnb=Euler2Dcm(p(ind,4),p(ind,5),p(ind,6));
             n_pd=cnb*[0;0;-1];
