@@ -84,27 +84,37 @@ if __name__ == '__main__':
         record_file_rss = record_dir + "_RSS_" + file_sign + "_" + filename
 
         # --- VLP 参数设置 ---
-        Send_freq = [735, 215, 640, 305, 865, 520]
-        Nled = len(Send_freq)
-        Receive_freq = 2000
+        yaml_file = '../config/VLP_parameter.yaml'  # 配置文件
+        params = load_vlp_config(yaml_file)
+        Send_freq = params["Send_freq"]
+        Nled = params["Nled"]
+        Receive_freq = params["Receive_freq"]
+        FFT_dt = params["FFT_dt"]
+        # --- 标定参数 ---
+        LED = params["LED"]
+        a = params["a"]
+        M = params["M"]
+
+        # Send_freq = [735, 215, 640, 305, 865, 520]
+        # Nled = len(Send_freq)
+        # Receive_freq = 2000
         sampleSize = 2001
         sampleTime = 10000000
-        FFT_dt = 1
+        # FFT_dt = 1
         win_size = FFT_dt * Receive_freq
         RSS = np.zeros((1, Nled))
         plotWindow_size = 60  # seconds
-        
         # --- 标定参数 ---
-        LED = np.array([
-            [4.5604, 0.7996, 2.99],
-            [4.2862, 2.1105, 2.99],
-            [4.5802, 3.4361, 2.99],
-            [6.5215, 3.1602, 2.99],
-            [6.5806, 2.1225, 2.99],
-            [6.6521, 0.9161, 2.99]
-        ])
-        a = np.array([152.1205, 138.0382, 167.5161, 138.3205, 121.9980, 133.0103])
-        M = np.array([0.4313, 0.3485, 0.5762, 0.7756, 0.5558, 0.9801])
+        # LED = np.array([
+        #     [4.5604, 0.7996, 2.99],
+        #     [4.2862, 2.1105, 2.99],
+        #     [4.5802, 3.4361, 2.99],
+        #     [6.5215, 3.1602, 2.99],
+        #     [6.5806, 2.1225, 2.99],
+        #     [6.6521, 0.9161, 2.99]
+        # ])
+        # a = np.array([152.1205, 138.0382, 167.5161, 138.3205, 121.9980, 133.0103])
+        # M = np.array([0.4313, 0.3485, 0.5762, 0.7756, 0.5558, 0.9801])
         std = np.array([1, 1, 1, 1, 1, 1])
         X0 = np.array([4.5604, 0.7996, 1.0])
         X = X0
@@ -236,12 +246,12 @@ if __name__ == '__main__':
             mag = yreal * 2 / DataSize * 1.852
             
             # 3. 提取 RSS
-            for j in range(Nled):
-                idx = int((Send_freq[j] * DataSize / Receive_freq))
-                start_idx_fft = max(0, idx - 5)
-                end_idx_fft = min(len(mag), idx + 5)
-                RSS[0, j] = max(mag[start_idx_fft : end_idx_fft])
-            
+            # for j in range(Nled):
+            #     idx = int((Send_freq[j] * DataSize / Receive_freq))
+            #     start_idx_fft = max(0, idx - 5)
+            #     end_idx_fft = min(len(mag), idx + 5)
+            #     RSS[0, j] = max(mag[start_idx_fft : end_idx_fft])
+            calculate_rss(Nled, Send_freq, DataSize, Receive_freq, mag, RSS)
             rss_queue.put(RSS)
             
             # 存储 RSS 历史数据

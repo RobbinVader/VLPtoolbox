@@ -2,7 +2,7 @@
 
 这是一个用于可见光定位 (VLP) 及其相关多传感器融合（IMU、全站仪真值）的数据处理、数据分析与算法工具箱。包含实时数据采集脚本以及用于离线处理、算法验证、坐标转换和精度评估的 MATLAB 函数库。
 
-@author: Sun, Xiao, Wu, Haoyu, Wuhan University  
+@author: Sun Xiao, Wu Haoyu, Wuhan University  
 
 @测试版本：MATLAB 2024a/2024b，Windows 11
 
@@ -43,9 +43,14 @@ MATLAB后处理程序
 ### realtime 目录
 python脚本，用于实时显示及处理VLP数据
 
-- **real_time_show_rss.py**: 通过串口实时读取光强传感器数据，并绘制RSS变化等图表
+- **real_time_main.py**：实时接收数据并进行三维定位主程序，通过串口读取光强数据，绘制RSS变化与散点平面轨迹等图表
+- **real_time_show_rss.py**: 最初版本的实时脚本，作为纪念保留
+- **utils.py**：工具函数模块，封装了三维定位、RSS计算、读取配置文件参数、接受串口数据、保存数据至文件等功能函数
 
-### 第三方库
+### test_haoyu 目录
+一些@Haoyu Wu进行功能测试的脚本，与工具箱使用无关
+
+### thirdparty 第三方库
 
 - **MartinKoch123-yaml-1.6.0.0**: 用于配置文件yaml的解析，无需安装，可直接调用
 
@@ -54,12 +59,28 @@ python脚本，用于实时显示及处理VLP数据
 - **VLP_parameter.yaml**: 用于可见光定位的基本参数
 
 ### data 目录
-
-- 未来完善
+存放实验采集数据，以实验日期为区分
 
 ## 安装说明
 
 要运行 real_time_show_rss.py 脚本，需要安装以下 Python 依赖包：
 
 ```bash
-pip install pyserial numpy scipy matplotlib
+pip install pyserial numpy scipy matplotlib pyyaml
+```
+
+               🌟
+              🎄🎄
+             🎄🔴🎄
+            🎄✨🎄🎄
+           🎄🎄🟡🎄🎄
+          🎄🎄🎄🎄🎄🎄
+         🎄🔵🎄🎄🎄🎄🎄
+        🎄🎄🎄🎄🎄🔴🎄🎄
+       🎄✨🎄🎄🎄🎄🎄✨🎄
+      🎄🎄🟡🎄🎄🎄🔵🎄🎄🎄
+     🎄🎄🎄🎄🎄🎄🎄🎄🎄🎄🎄
+               🪵🪵
+               🪵🪵
+    ----------------------------
+    🎊 HAPPY NEW YEAR 2026 !! 🎊
