@@ -1,6 +1,8 @@
 function [LED,nLED,a,M,fhz,fs,dt,rate]=VLP_parameter(cfgfile,m)
 
-addpath("../thirdparty/MartinKoch123-yaml-1.6.0.0");
+function_dir = fileparts(mfilename('fullpath'));
+repo_root = fileparts(function_dir);
+addpath(fullfile(repo_root, 'thirdparty', 'MartinKoch123-yaml-1.6.0.0'));
 cfg=yaml.loadFile(cfgfile);
 
 % 提取参数

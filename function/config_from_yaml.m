@@ -1,6 +1,8 @@
 function [VLPfile, TSfile, IMUfile, idx1, idx2, t0_TS, t0_IMU, std, yaw0] = config_from_yaml(cfgfile)
 % 从 YAML 配置文件加载实验参数
-    addpath("../thirdparty/MartinKoch123-yaml-1.6.0.0");
+    function_dir = fileparts(mfilename('fullpath'));
+    repo_root = fileparts(function_dir);
+    addpath(fullfile(repo_root, 'thirdparty', 'MartinKoch123-yaml-1.6.0.0'));
     % 加载 YAML 文件
     cfg = yaml.loadFile(cfgfile);
     
